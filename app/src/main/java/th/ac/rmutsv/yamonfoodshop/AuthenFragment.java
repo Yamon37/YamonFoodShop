@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 /**
@@ -63,7 +67,7 @@ public class AuthenFragment extends Fragment {
     private void checkAuthen(String user, String password) {
         MyConstant myConstant = new MyConstant();
         MyAlert myAlert = new MyAlert(getActivity());
-
+        String name, truePassword;
 
         try {
           GetUserWhereUserThread getUserWhereUserThread = new GetUserWhereUserThread(getActivity());
@@ -71,6 +75,28 @@ public class AuthenFragment extends Fragment {
 
           String jsonString = getUserWhereUserThread.get();
             Log.d("8MayV1", "json"+jsonString);
+
+            if (jsonString.equals("null")) {
+                myAlert.normalDialog("User false", "No  " + user + "  in database");
+            } else {
+                JSONArray jsonArray = new JSONArray(jsonString);
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                name = jsonObject.getString("Name");
+                truePassword = jsonObject.getString("Password");
+
+                if (password.equals(truePassword)) {
+                    //Pass true
+                    Toast.makeText(getActivity(),"Welcome  "+ name +"Narak", Toast.LENGTH_SHORT).show();
+
+
+
+                } else {
+                    //Pass False
+                    myAlert.normalDialog("Password False", "Password try agian");
+                }
+
+            } //if
+
 
         }catch (Exception e){
             e.printStackTrace();
