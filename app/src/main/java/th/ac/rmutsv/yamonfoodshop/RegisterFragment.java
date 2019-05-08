@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 
 /**
@@ -19,6 +20,9 @@ import android.widget.EditText;
  */
 public class RegisterFragment extends Fragment {
 
+
+    private boolean aBoolean = true;
+    private String genderString;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -32,7 +36,30 @@ public class RegisterFragment extends Fragment {
 //        Create toolbar
         createToolbar();
 
+//        Gender Controller
+
+        genderController();
+
     } //Main Method
+
+    private void genderController() {
+        RadioGroup radioGroup = getView().findViewById(R.id.ragGender);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                aBoolean = false;
+                switch (checkedId) {
+                    case R.id.radMale:
+                        genderString = "Male";
+                        break;
+                    case R.id.radFemale:
+                        genderString = "Female";
+                        break;
+
+                }
+            }
+        });
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -56,6 +83,27 @@ public class RegisterFragment extends Fragment {
         EditText nameEditText = getView().findViewById(R.id.edtName);
         EditText userEditText = getView().findViewById(R.id.edtUser);
         EditText passwordEditText = getView().findViewById(R.id.edtPassword);
+
+        String name = nameEditText.getText().toString().trim();
+        String user = userEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+
+        MyAlert myAlert = new MyAlert(getActivity());
+
+        if (name.isEmpty() || user.isEmpty() || password.isEmpty()) {
+//        Have Space
+            myAlert.normalDialog("Have Space" , "Please Fill All Blank");
+
+
+        } else if (aBoolean) {
+//            Non Choose Gender
+            myAlert.normalDialog("Non choose Gender" , "Please Choose Gender");
+        } else {
+//            Everything Ok
+
+        }
+
+
     }
 
     private void createToolbar() {
