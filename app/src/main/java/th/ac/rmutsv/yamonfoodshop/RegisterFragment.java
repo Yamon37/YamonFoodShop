@@ -101,7 +101,15 @@ public class RegisterFragment extends Fragment {
         } else {
 //            Everything Ok
 
-        }
+            try {
+                AddUserThread addUserThread = new AddUserThread(getActivity());
+                addUserThread.execute(name , genderString , user , password , );
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } //if
 
 
     }
